@@ -1,0 +1,8 @@
+why is minutes a string? 
+email alerting
+twitter alerting
+sms alerting
+allow user input station and targets
+autoresolve targets based on src/destination
+allow configurable window of time
+
