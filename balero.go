@@ -5,6 +5,7 @@ import "net/http"
 import "io/ioutil"
 import . "balero/json2struct"
 import "strconv"
+import "sort"
 
 const (
 	KEY     = "MW9S-E7SL-26DU-VV8V" // public use key from bart website
@@ -45,6 +46,7 @@ func main() {
 	fmt.Printf("\n%s ", targetTrains)
 	//fmt.Printf("\n%s\n", targetMinutes)
 	intMinutes := convertStrMinutesToInt(targetMinutes)
+	sort.Ints(intMinutes)
 	fmt.Printf("%d\n", intMinutes)
 
 	for index, _ := range intMinutes[:len(intMinutes)-2] {
