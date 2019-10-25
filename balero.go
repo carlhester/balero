@@ -6,17 +6,10 @@ import "io/ioutil"
 import . "balero/json2struct"
 import "strconv"
 import "sort"
-
-const (
-	KEY     = "MW9S-E7SL-26DU-VV8V" // public use key from bart website
-	STATION = "MONT"
-	DIR     = "n"
-	TIMEWIN = 25
-)
+import . "balero/sendalerts"
 
 func main() {
 	url := "http://api.bart.gov/api/etd.aspx?cmd=etd&orig=" + STATION + "&key=" + KEY + "&dir=" + DIR + "&json=y"
-
 	resp, err := http.Get(url)
 	if err != nil {
 		panic(err.Error())
@@ -48,10 +41,11 @@ func main() {
 	intMinutes := convertStrMinutesToInt(targetMinutes)
 	sort.Ints(intMinutes)
 	fmt.Printf("%d\n", intMinutes)
+	SendSNS()
 
 	for index, _ := range intMinutes[:len(intMinutes)-2] {
 		twoTrainDelta := intMinutes[index+2] - intMinutes[index]
-		if twoTrainDelta < TIMEWIN {
+		if twoTrainDelta <= TIMEWIN {
 			fmt.Printf("Match! %d %d %d : %d\n\n", intMinutes[index], intMinutes[index+1], intMinutes[index+2], twoTrainDelta)
 		}
 	}
