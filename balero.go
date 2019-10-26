@@ -5,7 +5,8 @@ import "net/http"
 import "io/ioutil"
 import "strconv"
 import "sort"
-import "strings"
+
+//import "strings"
 
 import . "balero/sendalerts"
 import . "balero/json2struct"
@@ -45,15 +46,17 @@ func main() {
 	fmt.Printf("%d\n", intMinutes)
 
 	// cast output to strings to send in alert
-	strTargetTrains := strings.Join(targetTrains, " ")
+	//strTargetTrains := strings.Join(targetTrains, " ")
 	//strMinutes := strconv.Itoa(intMinutes)
-	alertMsg := fmt.Sprint(strTargetTrains, intMinutes)
-	SendSNS(alertMsg, PHONE)
+	//alertMsg := fmt.Sprintf("%s %d", strTargetTrains, intMinutes)
+	//SendSNS(alertMsg, PHONE)
 
 	for index, _ := range intMinutes[:len(intMinutes)-2] {
 		twoTrainDelta := intMinutes[index+2] - intMinutes[index]
 		if twoTrainDelta <= TIMEWIN {
 			fmt.Printf("Match! %d %d %d : %d\n\n", intMinutes[index], intMinutes[index+1], intMinutes[index+2], twoTrainDelta)
+			alertMsg := fmt.Sprintf("%s %d %d %d : %d", targetTrains, intMinutes[index], intMinutes[index+1], intMinutes[index+2], twoTrainDelta)
+			SendSNS(alertMsg, PHONE)
 		}
 	}
 }
