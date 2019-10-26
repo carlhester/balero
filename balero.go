@@ -3,10 +3,12 @@ package main
 import "fmt"
 import "net/http"
 import "io/ioutil"
-import . "balero/json2struct"
 import "strconv"
 import "sort"
+import "strings"
+
 import . "balero/sendalerts"
+import . "balero/json2struct"
 
 func main() {
 	url := "http://api.bart.gov/api/etd.aspx?cmd=etd&orig=" + STATION + "&key=" + KEY + "&dir=" + DIR + "&json=y"
@@ -36,12 +38,17 @@ func main() {
 		}
 
 	}
+
 	fmt.Printf("\n%s ", targetTrains)
-	//fmt.Printf("\n%s\n", targetMinutes)
 	intMinutes := convertStrMinutesToInt(targetMinutes)
 	sort.Ints(intMinutes)
 	fmt.Printf("%d\n", intMinutes)
-	SendSNS()
+
+	// cast output to strings to send in alert
+	strTargetTrains := strings.Join(targetTrains, " ")
+	//strMinutes := strconv.Itoa(intMinutes)
+	alertMsg := fmt.Sprint(strTargetTrains, intMinutes)
+	SendSNS(alertMsg, PHONE)
 
 	for index, _ := range intMinutes[:len(intMinutes)-2] {
 		twoTrainDelta := intMinutes[index+2] - intMinutes[index]

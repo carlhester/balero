@@ -6,3 +6,5 @@
 [] autoresolve targets based on src/destination
 [] allow configurable window of time
 [] configure a "leave time" to account for walking distance
+[] how to do SNS without allocating an IAM user? 
+

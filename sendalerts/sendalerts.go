@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/sns"
 )
 
-func SendSNS() {
+func SendSNS(message string, phone string) {
 
 	fmt.Println("creating session")
 	sess := session.Must(session.NewSession())
@@ -18,8 +18,8 @@ func SendSNS() {
 	fmt.Println("service created")
 
 	params := &sns.PublishInput{
-		Message:     aws.String("testing 123"),
-		PhoneNumber: aws.String("+11234567"),
+		Message:     aws.String(message),
+		PhoneNumber: aws.String(phone),
 	}
 	resp, err := svc.Publish(params)
 
