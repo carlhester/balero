@@ -9,6 +9,7 @@ import "time"
 
 //import "strings"
 
+import . "balero/config"
 import . "balero/sendalerts"
 import . "balero/json2struct"
 
@@ -54,7 +55,7 @@ func main() {
 			if twoTrainDelta <= TIMEWIN {
 				fmt.Printf("Match! %d %d %d : %d\n\n", intMinutes[i], intMinutes[i+1], intMinutes[i+2], twoTrainDelta)
 				alertMsg := fmt.Sprintf("%s %d %d %d : %d", targetTrains, intMinutes[i], intMinutes[i+1], intMinutes[i+2], twoTrainDelta)
-				SendSNS(alertMsg, PHONE)
+				SendSNS(alertMsg)
 			}
 		}
 	}

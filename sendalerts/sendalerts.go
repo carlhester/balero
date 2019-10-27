@@ -1,6 +1,7 @@
 package sendalerts
 
 import (
+	"balero/config"
 	"fmt"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -8,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/sns"
 )
 
-func SendSNS(message string, phone string) {
+func SendSNS(message string) {
 	fmt.Println("SendSNS start")
 	sess := session.Must(session.NewSession())
 
@@ -16,7 +17,7 @@ func SendSNS(message string, phone string) {
 
 	params := &sns.PublishInput{
 		Message:     aws.String(message),
-		PhoneNumber: aws.String(phone),
+		PhoneNumber: aws.String(config.PHONE),
 	}
 	resp, err := svc.Publish(params)
 
