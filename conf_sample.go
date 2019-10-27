@@ -7,6 +7,7 @@ const (
 	STATION = "MONT"
 	DIR     = "n"
 	TIMEWIN = 25
+	PHONE	= "+15552223333"
 )
 
 */
