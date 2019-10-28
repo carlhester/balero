@@ -11,10 +11,15 @@ set AWS_SECRET_ACCESS_KEY=BBBBBB
 set AWS_DEFAULT_REGION=us-east-1
 */
 
+/*
+
+// Main config
+
 const (
 	KEY     = "MW9S-E7SL-26DU-VV8V" // public use key from bart website
 	STATION = "MONT"
 	DIR     = "n"
 	TIMEWIN = 15
-	PHONE   = "+14436235265"
+	PHONE   = "+11234567890"
 )
+*/

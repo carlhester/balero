@@ -8,3 +8,4 @@
 [] configure a "leave time" to account for walking distance
 [] how to do SNS without allocating an IAM user? 
 [] how to more easily set AWS creds other than environment variables?
+[] use the line color instead of the target stations, duh

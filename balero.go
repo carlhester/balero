@@ -29,6 +29,7 @@ func main() {
 
 	var targetTrains []string
 	var targetMinutes []string
+	var targetLines []string
 
 	for _, train := range usableData.Root.Station[0].Etd {
 
@@ -38,6 +39,10 @@ func main() {
 			for _, est := range train.Est {
 				targetMinutes = append(targetMinutes, est.Minutes)
 			}
+
+			for _, est := range train.Est {
+				targetLines = append(targetLines, est.Color)
+			}
 		}
 
 	}
@@ -45,6 +50,7 @@ func main() {
 	currTime := time.Now()
 	fmt.Printf(currTime.String())
 	fmt.Printf("\n%s ", targetTrains)
+	fmt.Printf("\n%s ", targetLines)
 	intMinutes := convertStrMinutesToInt(targetMinutes)
 	sort.Ints(intMinutes)
 	fmt.Printf("%d\n", intMinutes)
