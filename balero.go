@@ -4,6 +4,7 @@ import "fmt"
 import "net/http"
 import "io/ioutil"
 import "strconv"
+import "strings"
 import "sort"
 import "time"
 
@@ -90,7 +91,7 @@ func isTargetStation(station string) bool {
 
 func isTargetLine(line string) bool {
 	for _, lineColor := range config.TargetStations {
-		if line == lineColor {
+		if strings.EqualFold(lineColor, line) {
 			return true
 		}
 	}
