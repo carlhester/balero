@@ -1,10 +1,10 @@
 [x] why is minutes a string? -- minutes can also return "Leaving"
 [] email alerting
 [] twitter alerting
-[] sms alerting
+[x] sms alerting
 [] allow user input station and targets
 [] autoresolve targets based on src/destination
-[] allow configurable window of time
+[x] allow configurable window of time
 [] configure a "leave time" to account for walking distance
 [] how to do SNS without allocating an IAM user? 
 
