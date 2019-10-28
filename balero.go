@@ -7,14 +7,12 @@ import "strconv"
 import "sort"
 import "time"
 
-//import "strings"
-
-import . "balero/config"
+import "balero/config"
 import . "balero/sendalerts"
 import . "balero/json2struct"
 
 func main() {
-	url := "http://api.bart.gov/api/etd.aspx?cmd=etd&orig=" + STATION + "&key=" + KEY + "&dir=" + DIR + "&json=y"
+	url := "http://api.bart.gov/api/etd.aspx?cmd=etd&orig=" + config.STATION + "&key=" + config.KEY + "&dir=" + config.DIR + "&json=y"
 	resp, err := http.Get(url)
 	if err != nil {
 		panic(err.Error())
@@ -29,36 +27,31 @@ func main() {
 
 	var targetTrains []string
 	var targetMinutes []string
-	var targetLines []string
 
 	for _, train := range usableData.Root.Station[0].Etd {
 
-		if isTargetStation(train.Abbreviation) {
-			targetTrains = append(targetTrains, train.Abbreviation)
+		for _, est := range train.Est {
 
-			for _, est := range train.Est {
+			if isTargetLine(est.Color) {
+				targetTrains = append(targetTrains, train.Abbreviation)
 				targetMinutes = append(targetMinutes, est.Minutes)
 			}
 
-			for _, est := range train.Est {
-				targetLines = append(targetLines, est.Color)
-			}
 		}
 
 	}
 
 	currTime := time.Now()
 	fmt.Printf(currTime.String())
-	fmt.Printf("\n%s ", targetTrains)
-	fmt.Printf("\n%s ", targetLines)
+	fmt.Printf("\ntargetTrains: %s ", targetTrains)
 	intMinutes := convertStrMinutesToInt(targetMinutes)
 	sort.Ints(intMinutes)
-	fmt.Printf("%d\n", intMinutes)
+	fmt.Printf("intMinutes: %d\n", intMinutes)
 
 	if len(intMinutes) > 2 {
 		for i, _ := range intMinutes[:len(intMinutes)-2] {
 			twoTrainDelta := intMinutes[i+2] - intMinutes[i]
-			if twoTrainDelta <= TIMEWIN {
+			if twoTrainDelta <= config.TIMEWIN {
 				fmt.Printf("Match! %d %d %d : %d\n\n", intMinutes[i], intMinutes[i+1], intMinutes[i+2], twoTrainDelta)
 				alertMsg := fmt.Sprintf("%s %d %d %d : %d", targetTrains, intMinutes[i], intMinutes[i+1], intMinutes[i+2], twoTrainDelta)
 				SendSNS(alertMsg)
@@ -87,6 +80,15 @@ func isTargetStation(station string) bool {
 	case
 		"ANTC", "CONC", "NCON", "PITT", "PHIL", "WCRK":
 		return true
+	}
+	return false
+}
+
+func isTargetLine(line string) bool {
+	for _, lineColor := range config.TargetStations {
+		if line == lineColor {
+			return true
+		}
 	}
 	return false
 }

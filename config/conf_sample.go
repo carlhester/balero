@@ -22,4 +22,6 @@ const (
 	TIMEWIN = 15
 	PHONE   = "+11234567890"
 )
+
+var TargetStations = [1]string{"YELLOW"}
 */
