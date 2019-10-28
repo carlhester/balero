@@ -39,8 +39,14 @@ func main() {
 		}
 	}
 
+	loc, err := time.LoadLocation("America/Los_Angeles")
+	if err != nil {
+		panic(err.Error())
+	}
 	currTime := time.Now()
-	fmt.Printf(currTime.String())
+	currTime = currTime.In(loc)
+	fmt.Printf(currTime.Format("Jan _2 15:04:05"))
+
 	fmt.Printf("\ntargetTrains: %s ", targetTrains)
 	intMinutes := convertStrMinutesToInt(targetMinutes)
 	sort.Ints(intMinutes)
