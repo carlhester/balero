@@ -64,6 +64,7 @@ func main() {
 	intMin := convertStrMinutesToInt(targetMinutes)
 	sort.Ints(intMin)
 
+	fmt.Printf("======================================\n")
 	fmt.Printf("Time: %s\n", timeStamp)
 	fmt.Printf("targetTrains: %s \n", targetTrains)
 	fmt.Printf("intMin: %d \n", intMin)
