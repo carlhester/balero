@@ -1,11 +1,8 @@
-[x] why is minutes a string? -- minutes can also return "Leaving"
 [] email alerting
 [] twitter alerting
 [x] sms alerting
-[] allow user input station and targets
-[] autoresolve targets based on src/destination
 [x] allow configurable window of time
 [] configure a "leave time" to account for walking distance
 [] how to do SNS without allocating an IAM user? 
 [] how to more easily set AWS creds other than environment variables?
-[] use the line color instead of the target stations, duh
+[x] use the line color instead of the target stations, duh

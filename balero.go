@@ -24,7 +24,7 @@ func main() {
 	flag.StringVar(&station, "station", "MONT", "Starting station abbreviation")
 	flag.StringVar(&dir, "dir", "n", "Train direction")
 	flag.StringVar(&targetLine, "line", "YELLOW", "Target Line")
-	flag.StringVar(&sendSMS, "SMS", "N", "Send SMS alerts : Y/N")
+	flag.BoolVar(&sendSMS, "SMS", false, "Send SMS alerts (if configured)")
 	flag.IntVar(&timeWindow, "time", 15, "Time window threshold for a match")
 	flag.Parse()
 
@@ -59,14 +59,14 @@ func main() {
 	}
 	currTime := time.Now()
 	currTime = currTime.In(loc)
-	timeStamp := fmt.Sprintf("%s\n", currTime.Format("Jan _2 15:04:05"))
+	timeStamp := fmt.Sprintf("%s", currTime.Format("Jan _2 15:04:05"))
 
 	intMin := convertStrMinutesToInt(targetMinutes)
 	sort.Ints(intMin)
 
-	fmt.Printf("Time: %s", timeStamp)
-	fmt.Printf("\ntargetTrains: %s ", targetTrains)
-	fmt.Printf("\nintMin: %d\n", intMin)
+	fmt.Printf("Time: %s\n", timeStamp)
+	fmt.Printf("targetTrains: %s \n", targetTrains)
+	fmt.Printf("intMin: %d \n", intMin)
 
 	alertMsg := timeStamp
 	numResults := 0
@@ -75,7 +75,7 @@ func main() {
 		for i, _ := range intMin[:len(intMin)-2] {
 			twoTrainDelta := intMin[i+2] - intMin[i]
 			if twoTrainDelta <= timeWindow {
-				fmt.Printf("\nMatch! %d %d %d : %d\n\n", intMin[i], intMin[i+1], intMin[i+2], twoTrainDelta)
+				fmt.Printf("Match! %d %d %d : %d\n\n", intMin[i], intMin[i+1], intMin[i+2], twoTrainDelta)
 				partAlertMsg := fmt.Sprintf("%s %d %d %d : %d", targetTrains, intMin[i], intMin[i+1], intMin[i+2], twoTrainDelta)
 				alertMsg = fmt.Sprintf("%s\n%s\n", alertMsg, partAlertMsg)
 				numResults += 1
@@ -83,8 +83,8 @@ func main() {
 		}
 	}
 	if numResults > 0 {
-		fmt.Printf("OUTPUT: %s", alertMsg)
-		if strings.EqualFold(sendSMS, "Y") {
+		fmt.Printf("Alert:\n%s", alertMsg)
+		if sendSMS == true {
 			SendSNS(alertMsg)
 		}
 	}
