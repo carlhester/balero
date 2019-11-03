@@ -10,8 +10,8 @@ import "sort"
 import "time"
 
 import "balero/config"
-import . "balero/sendalerts"
-import . "balero/json2struct"
+import "balero/sendalerts"
+import "balero/json2struct"
 
 func main() {
 	station := config.Station
@@ -39,7 +39,7 @@ func main() {
 		panic(err.Error())
 	}
 
-	usableData := RawDataIntoDataStruct(data)
+	usableData := json2struct.RawDataIntoDataStruct(data)
 
 	var targetTrains []string
 	var targetMinutes []string
@@ -88,7 +88,7 @@ func main() {
 	if numResults > 0 {
 		fmt.Printf("Alert:\n%s", alertMsg)
 		if sendSMS == true {
-			SendSNS(alertMsg)
+			sendalerts.SendSNS(alertMsg)
 		}
 	}
 

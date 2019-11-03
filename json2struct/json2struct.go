@@ -1,4 +1,4 @@
-package json2structs
+package json2struct
 
 import "encoding/json"
 
